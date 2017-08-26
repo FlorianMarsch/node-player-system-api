@@ -30,6 +30,28 @@ db.once('open', function() {
 	     });
 	});
 	
+	app.post("/api/news", function(request, response) {
+		
+		response.header("Content-Type", "application/json");
+		if(!request.body){
+			response.status(400).send("{'message': 'Bad Request'}");
+		}
+		
+		var payload = JSON.parse(request.body);
+		if(!payload.username || !payload.message){
+			response.status(400).send("{'message': 'Bad Request'}");
+		}
+		payload.time = new Date().toISOString();
+		
+		new News(payload).save(function(err) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(news);
+	         }
+	     });
+	});
+	
 	
 	var port =(process.env.PORT || 5000);
 	

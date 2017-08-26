@@ -33,13 +33,16 @@ db.once('open', function() {
 	app.post("/api/news", function(request, response) {
 		
 		response.header("Content-Type", "application/json");
+		console.log(request.body);
 		if(!request.body){
+			
 			response.status(400).send("{'message': 'Bad Request'}");
 			return;
 		}
 		
 		var payload = request.body;
 		if(!payload.username || !payload.message){
+			
 			response.status(400).send("{'message': 'Bad Request'}");
 			return;
 		}

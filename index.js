@@ -33,7 +33,7 @@ db.once('open', function() {
 	app.post("/api/news", function(request, response) {
 		
 		response.header("Content-Type", "application/json");
-		console.log(request.body);
+		console.log(JSON.stringify(request));
 		if(!request.body){
 			
 			response.status(400).send("{'message': 'Bad Request'}");

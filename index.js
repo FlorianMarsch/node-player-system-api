@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-var News = require('./models/news');
+var Profile = require('./models/profile');
 
 var config = {'url' : 'mongodb://localhost/test'};
 if(process.env.MONGODB_URI){
@@ -21,9 +21,9 @@ db.once('open', function() {
   // we're connected!
 	console.log("connected");
 });
-	app.get("/api/news", function(request, response) {
+	app.get("/api/profile", function(request, response) {
 		response.header("Content-Type", "application/json");
-		 News.find(function(err, news) {
+		 Profile.find(function(err, news) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
@@ -32,30 +32,62 @@ db.once('open', function() {
 	     });
 	});
 	
-	app.post("/api/news", function(request, response) {
+	app.get("/api/profile/:id", function(request, response) {
+		 var id = request.params.id;
+		response.header("Content-Type", "application/json");
+		 Profile.findById(id, function(err, profile) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(profile);
+	         }
+	     });
+	});
+	
+	app.post("/api/profile/", function(request, response) {
 		
 		response.header("Content-Type", "application/json");
-		
 		if(!request.body){
-			
 			response.status(400).send("{'message': 'Bad Request'}");
 			return;
 		}
 		
 		var payload = request.body;
-		if(!payload.username || !payload.message){
-			var message = {'message': 'Bad Request'};
-			message.payload = payload;
-			response.status(400).send(JSON.stringify(message));
-			return;
-		}
-		payload.time = new Date().toISOString();
-		
-		new News(payload).save(function(err) {
+		new Profile(payload).save(function(err) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
 	        	 	response.status(200).send(payload);
+	         }
+	     });
+	});
+	
+	app.post("/api/profile/:id", function(request, response) {
+		var id = request.params.id;
+		response.header("Content-Type", "application/json");
+		if(!request.body){
+			response.status(400).send("{'message': 'Bad Request'}");
+			return;
+		}
+		
+		var payload = request.body;
+		Profile.findByIdAndUpdate(id, payload,function(err) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(payload);
+	         }
+	     });
+	});
+	
+	app.delete("/api/profile/:id", function(request, response) {
+		var id = request.params.id;
+		response.header("Content-Type", "application/json");
+		Profile.findByIdAndRemove(id, payload,function(err) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send("{'message': 'Done'}");
 	         }
 	     });
 	});

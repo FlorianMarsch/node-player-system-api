@@ -7,5 +7,6 @@ module.exports = mongoose.model('Profile',{
 	archivments: [String],
 	twitterName: String,
 	hashTag: String,
-	updated: { type: Date, default: Date.now }
+	updated: { type: Date, default: Date.now },
+	npc: { type: Boolean, default: false}
 });

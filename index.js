@@ -41,8 +41,9 @@ db.once('open', function() {
 		
 		var payload = request.body;
 		if(!payload.username || !payload.message){
-			
-			response.status(400).send("{'message': 'Bad Request'}");
+			var message = {'message': 'Bad Request'};
+			message.payload = payload;
+			response.status(400).send(JSON.stringify(message));
 			return;
 		}
 		payload.time = new Date().toISOString();

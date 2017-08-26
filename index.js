@@ -33,7 +33,6 @@ db.once('open', function() {
 	app.post("/api/news", function(request, response) {
 		
 		response.header("Content-Type", "application/json");
-		console.log(JSON.stringify(request));
 		if(!request.body){
 			
 			response.status(400).send("{'message': 'Bad Request'}");
@@ -52,7 +51,7 @@ db.once('open', function() {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
-	        	 	response.status(200).send(news);
+	        	 	response.status(200).send(payload);
 	         }
 	     });
 	});

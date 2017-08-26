@@ -4,7 +4,8 @@ process.on('uncaughtException', function (err) {
 
 var express = require('express');
 var app = express();
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 var News = require('./models/news');
 
@@ -18,7 +19,8 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
-	
+	console.log("connected");
+});
 	app.get("/api/news", function(request, response) {
 		response.header("Content-Type", "application/json");
 		 News.find(function(err, news) {
@@ -33,7 +35,7 @@ db.once('open', function() {
 	app.post("/api/news", function(request, response) {
 		
 		response.header("Content-Type", "application/json");
-		console.log(request.body);
+		
 		if(!request.body){
 			
 			response.status(400).send("{'message': 'Bad Request'}");
@@ -64,5 +66,5 @@ db.once('open', function() {
 	app.listen(port, function() {
 	  console.log('Node app is running on port', port);
 	});
-});
+
 

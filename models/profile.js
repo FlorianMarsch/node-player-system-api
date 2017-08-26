@@ -4,7 +4,7 @@ module.exports = mongoose.model('Profile',{
 	id: String,
 	name: String,
 	imageUrl: String,
-	archivments: [String],
+	archivments: { type: [String], default: [] },
 	twitterName: String,
 	hashTag: String,
 	updated: { type: Date, default: Date.now },

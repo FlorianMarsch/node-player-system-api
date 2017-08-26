@@ -35,11 +35,13 @@ db.once('open', function() {
 		response.header("Content-Type", "application/json");
 		if(!request.body){
 			response.status(400).send("{'message': 'Bad Request'}");
+			return;
 		}
 		
 		var payload = JSON.parse(request.body);
 		if(!payload.username || !payload.message){
 			response.status(400).send("{'message': 'Bad Request'}");
+			return;
 		}
 		payload.time = new Date().toISOString();
 		

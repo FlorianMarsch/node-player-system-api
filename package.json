@@ -21,7 +21,8 @@
     "bcrypt-nodejs": "0.0.3",
     "connect-mongo": "",
     "ejs": "",
-    "redis": "2.8.0"
+    "redis": "2.8.0",
+    "request": "2.81.0"
   },
   "repository": {
     "type": "git",

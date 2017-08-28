@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 var Player = require('./models/player');
+var Offer = require('./models/offer');
 
 var config = {'url' : 'mongodb://localhost/test'};
 if(process.env.MONGODB_URI){
@@ -91,6 +92,104 @@ subscriber.on("message", function(channel, message) {
 	     });
 	});
 	
+	app.get("/api/offer/from/:profileId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var profileId = request.params.profileId;
+		Offer.find({from:{id: profileId}},function(err, offer) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(offer);
+	         }
+	     });
+	});
+	
+	app.get("/api/offer/to/:profileId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var profileId = request.params.profileId;
+		Offer.find({to:{id: profileId}},function(err, offer) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(offer);
+	         }
+	     });
+	});	
+	
+	app.post("/api/offer/from/:profileId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var profileId = request.params.profileId;
+		
+		var payload = request.body;
+		if(!payload.username || !payload.userid){
+			var message = {'message': 'Bad Request'};
+			message.payload = payload;
+			response.status(400).send(JSON.stringify(message));
+			return;
+		}
+		payload.from.id = payload.userid;
+		payload.from.name = payload.username;
+		if(!payload.price || payload.price <1){
+			payload.status = "widerrufen";
+		}
+		Player.findById(payload.player.id, function(err, player) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+		        	 var to = {};
+		        	 to.id = player.owner.id;
+		        	 to.name = player.owner.name;
+		        	 payload.to = to;
+		        	 payload.player.name = player.name;
+		        	 
+		        	 Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
+		    	         if(err){
+		    	        	 	response.status(500).send("{'message': 'This is an error!'}");
+		    	         }else{
+		    	        	 	response.status(200).send(offer);
+		    	         }
+		    	     });
+	         }
+	     });
+		
+		
+	});
+	
+	app.post("/api/offer/to/:profileId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var profileId = request.params.profileId;
+		
+		var payload = request.body;
+		if(!payload.username || !payload.userid){
+			var message = {'message': 'Bad Request'};
+			message.payload = payload;
+			response.status(400).send(JSON.stringify(message));
+			return;
+		}
+		payload.to.id = payload.userid;
+		payload.to.name = payload.username;
+		
+		Player.findById(payload.player.id, function(err, player) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+		        	 if(player.owner.id !== payload.userid){
+		        		 response.status(500).send("{'message': 'This is an error!'}");
+		        		 return;
+		        	 }
+		        	 
+		        	 Offer.findOneAndUpdate({status : "offen",id:payload._id},payload,{upsert:false},function(err, offer) {
+		    	         if(err){
+		    	        	 	response.status(500).send("{'message': 'This is an error!'}");
+		    	         }else{
+		    	        	 	response.status(200).send(offer);
+		    	         }
+		    	     });
+	         }
+	     });
+		
+		
+	});
 	
 
 	

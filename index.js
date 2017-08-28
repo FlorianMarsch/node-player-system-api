@@ -121,7 +121,7 @@ subscriber.on("message", function(channel, message) {
 		var profileId = request.params.profileId;
 		
 		var payload = request.body;
-		if(!payload.username || !payload.userid){
+		if(!payload.username || !payload.userid || !payload.player || !payload.player.id){
 			var message = {'message': 'Bad Request'};
 			message.payload = payload;
 			response.status(400).send(JSON.stringify(message));
@@ -160,7 +160,7 @@ subscriber.on("message", function(channel, message) {
 		var profileId = request.params.profileId;
 		
 		var payload = request.body;
-		if(!payload.username || !payload.userid){
+		if(!payload.username || !payload.userid || !payload.player || !payload.player.id){
 			var message = {'message': 'Bad Request'};
 			message.payload = payload;
 			response.status(400).send(JSON.stringify(message));
@@ -174,7 +174,7 @@ subscriber.on("message", function(channel, message) {
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
 		        	 if(player.owner.id !== payload.userid){
-		        		 response.status(500).send("{'message': 'This is an error!'}");
+		        		 response.status(403).send("{'message': 'Unauthorized'}");
 		        		 return;
 		        	 }
 		        	 

@@ -73,7 +73,7 @@ subscriber.on("message", function(channel, message) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
-	        	 	response.status(200).send(news);
+	        	 	response.status(200).send(player);
 	         }
 	     });
 	});

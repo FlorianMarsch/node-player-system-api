@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-var Profile = require('./models/profile');
+var Player = require('./models/player');
 
 var config = {'url' : 'mongodb://localhost/test'};
 if(process.env.MONGODB_URI){
@@ -21,9 +21,55 @@ db.once('open', function() {
   // we're connected!
 	console.log("connected");
 });
-	app.get("/api/profile", function(request, response) {
+
+
+app.get("/ping", function(request, response) {
+	response.header("Content-Type", "application/json");
+	response.status(200).send("{'message': 'PONG'}");      
+});
+var  minutely =  parseInt((process.env.POLL_TIME || 60*1*1000));
+var localhost = (process.env.LOCALHOST || "localhost:5000");
+var keepAlive = function() {
+	request("http://"+localhost+"/ping",function (error, response, body) {
+		// do nothing;
+	}).on('error', function(error){
+		console.log(error);
+	});
+};
+setInterval(keepAlive, minutely);
+
+var redis = require("redis");
+var subscriber  = redis.createClient(process.env.REDIS_URL);
+subscriber.subscribe("currentPlayers");
+subscriber.on("message", function(channel, message) {
+	 if(channel==="currentPlayers"){
+		  var payload = JSON.parse(message);
+		  payload.map(function(element){
+			  return  {
+				  comunioId : element.id,
+				  name: element.name,
+				  imageUrl:element.picture,
+				  profileUrl: element.url,
+				  position:element.position,
+				  points:element.points,
+				  price:element.price
+			  };
+		  }).forEach(function(element) {
+			  Player.findOneAndUpdate({comunioId: element.comunioId}, element,{upsert:true},
+					  function(err) {
+		         if(err){
+		        	 	console.log("{'message': 'This is an error!'}");
+		         }else{
+		        	 	console.log("update :", element);
+		         }
+		     });
+		  });
+	 }
+});
+
+	app.get("/api/player", function(request, response) {
 		response.header("Content-Type", "application/json");
-		 Profile.find(function(err, news) {
+		Player.find(function(err, player) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
@@ -32,66 +78,21 @@ db.once('open', function() {
 	     });
 	});
 	
-	app.get("/api/profile/:id", function(request, response) {
+	
+	app.get("/api/player/:id", function(request, response) {
 		 var id = request.params.id;
 		response.header("Content-Type", "application/json");
-		 Profile.findById(id, function(err, profile) {
+		Player.findById(id, function(err, player) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
-	        	 	response.status(200).send(profile);
+	        	 	response.status(200).send(player);
 	         }
 	     });
 	});
 	
-	app.post("/api/profile/", function(request, response) {
-		
-		response.header("Content-Type", "application/json");
-		if(!request.body){
-			response.status(400).send("{'message': 'Bad Request'}");
-			return;
-		}
-		
-		var payload = request.body;
-		new Profile(payload).save(function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(payload);
-	         }
-	     });
-	});
 	
-	app.post("/api/profile/:id", function(request, response) {
-		var id = request.params.id;
-		response.header("Content-Type", "application/json");
-		if(!request.body){
-			response.status(400).send("{'message': 'Bad Request'}");
-			return;
-		}
-		
-		var payload = request.body;
-		Profile.findByIdAndUpdate(id, payload,function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(payload);
-	         }
-	     });
-	});
-	
-	app.delete("/api/profile/:id", function(request, response) {
-		var id = request.params.id;
-		response.header("Content-Type", "application/json");
-		Profile.findByIdAndRemove(id, payload,function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send("{'message': 'Done'}");
-	         }
-	     });
-	});
-	
+
 	
 	var port =(process.env.PORT || 5000);
 	

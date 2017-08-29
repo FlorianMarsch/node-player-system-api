@@ -41,9 +41,9 @@ setInterval(keepAlive, minutely);
 
 var redis = require("redis");
 var subscriber  = redis.createClient(process.env.REDIS_URL);
-subscriber.subscribe("currentPlayers");
+subscriber.subscribe("playersChanged");
 subscriber.on("message", function(channel, message) {
-	 if(channel==="currentPlayers"){
+	 if(channel==="playersChanged"){
 		  var payload = JSON.parse(message);
 		  payload.map(function(element){
 			  return  {
@@ -191,6 +191,17 @@ subscriber.on("message", function(channel, message) {
 		
 	});
 	
+	app.get("/api/squad/:ownerId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var id = request.params.ownerId;
+		Squad.find({ownerId:id}).populate("players").exec(function(err, squad) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(squad);
+	         }
+	     });
+	});	
 
 	
 	var port =(process.env.PORT || 5000);

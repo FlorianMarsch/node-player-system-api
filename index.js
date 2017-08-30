@@ -56,7 +56,7 @@ subscriber.on("message", function(channel, message) {
 				  position:element.position,
 				  points:element.points,
 				  price:element.price,
-				  updated: Date.now,
+				  updated: new Date(),
 				  market :false
 			  };
 		  }).forEach(function(element) {

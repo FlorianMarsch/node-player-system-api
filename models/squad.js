@@ -4,6 +4,6 @@ module.exports = mongoose.model('Squad',{
 	id: String,
 	players :{ type: [mongoose.Schema.Types.ObjectId],ref: 'Player', default: [] },
 	money :{ type: Number, default: 40000000 },
-	ownerId : String,
+	ownerId : { type: String, required:true},
 	updated: { type: Date, default: Date.now }
 });

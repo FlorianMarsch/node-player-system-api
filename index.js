@@ -10,6 +10,8 @@ app.use(bodyParser.json());
 var Player = require('./models/player');
 var Offer = require('./models/offer');
 
+var Squad = require('./models/squad');
+
 var config = {'url' : 'mongodb://localhost/test'};
 if(process.env.MONGODB_URI){
 	config.url = process.env.MONGODB_URI;

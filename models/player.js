@@ -9,6 +9,7 @@ module.exports = mongoose.model('Player',{
 	position : { type: String, required:true, trim:true },
 	points :{ type: Number, default: 0, min: 0 },
 	price :{ type: Number, default: 160000, min: 160000 },
+	market :{ type: Boolean, default: false },
 	owner : {
 		id : { type: String, default: "59a18baddbe2ed1100b5e824" },
 		name : { type: String, default: "Transfermarkt" }

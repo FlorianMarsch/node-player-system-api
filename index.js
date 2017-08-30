@@ -56,7 +56,8 @@ subscriber.on("message", function(channel, message) {
 				  position:element.position,
 				  points:element.points,
 				  price:element.price,
-				  updated: Date.now
+				  updated: Date.now,
+				  market :false
 			  };
 		  }).forEach(function(element) {
 			  Player.findOneAndUpdate({comunioId: element.comunioId}, element,{upsert:true},

@@ -203,6 +203,18 @@ subscriber.on("message", function(channel, message) {
 	         }
 	     });
 	});	
+	app.post("/api/squad/:ownerId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var id = request.params.ownerId;
+		Squad.findOneAndUpdate({ownerId: id}, request.body,{upsert:true},
+				  function(err, squad) {
+	         if(err){
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+	        	 	response.status(200).send(squad);
+	         }
+	     });
+	});	
 
 	
 	var port =(process.env.PORT || 5000);

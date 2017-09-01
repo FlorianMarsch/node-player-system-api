@@ -60,12 +60,12 @@ subscriber.on("message", function(channel, message) {
 				  market :false
 			  };
 		  }).forEach(function(element) {
-			  Player.findOneAndUpdate({comunioId: element.comunioId}, element,{upsert:true},
-					  function(err) {
+			  Player.findOneAndUpdate({comunioId: element.comunioId}, element,{upsert:true,new: true},
+					  function(err, doc) {
 		         if(err){
 		        	 	console.log("{'message': 'This is an error!'}");
 		         }else{
-		        	 	console.log("update :", element);
+		        	 	console.log("update :", doc);
 		         }
 		     });
 		  });

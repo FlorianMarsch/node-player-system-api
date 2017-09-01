@@ -221,6 +221,27 @@ subscriber.on("message", function(channel, message) {
 	         }
 	     });
 	});	
+	app.post("/api/lineUp/:ownerId", function(request, response) {
+		response.header("Content-Type", "application/json");
+		var id = request.params.ownerId;
+		Squad.findOne({ownerId: id}, function(err, squad) {
+	         if(err){
+				 	console.log(err);
+	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	         }else{
+				 var payload = squad;
+				 payload.lineUp = request.body;
+				 Squad.findOneAndUpdate({ownerId: id}, payload,	function(err, squad) {
+					if(err){
+							console.log(err);
+							response.status(500).send("{'message': 'This is an error!'}");
+					}else{
+							response.status(200).send(squad);
+					}
+				});
+	         }
+	     });
+	});	
 
 	
 	var port =(process.env.PORT || 5000);

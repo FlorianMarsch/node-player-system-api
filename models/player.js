@@ -15,5 +15,5 @@ module.exports = mongoose.model('Player',{
 		name : { type: String, default: "Transfermarkt" }
 	},
 	updated: { type: Date, default: Date.now },
-	lastUse :{ type: String, default: "-"}
+	lastUse :{ type: String}
 });

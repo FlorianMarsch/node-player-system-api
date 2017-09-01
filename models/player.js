@@ -14,5 +14,6 @@ module.exports = mongoose.model('Player',{
 		id : { type: String, default: "59a18baddbe2ed1100b5e824" },
 		name : { type: String, default: "Transfermarkt" }
 	},
-	updated: { type: Date, default: Date.now }
+	updated: { type: Date, default: Date.now },
+	lastUse :{ type: String, default: "-"}
 });

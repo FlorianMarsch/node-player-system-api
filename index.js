@@ -209,7 +209,7 @@ subscriber.on("message", function(channel, message) {
 	app.post("/api/squad/:ownerId", function(request, response) {
 		response.header("Content-Type", "application/json");
 		var id = request.params.ownerId;
-		Squad.findOneAndUpdate({ownerId: id}, request.body,{upsert:true},
+		Squad.findOneAndUpdate({ownerId: id}, request.body,{upsert:!request.body._id},
 				  function(err, squad) {
 	         if(err){
 				 	console.log(err);

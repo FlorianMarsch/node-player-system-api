@@ -212,6 +212,7 @@ subscriber.on("message", function(channel, message) {
 		Squad.findOneAndUpdate({ownerId: id}, request.body,{upsert:true},
 				  function(err, squad) {
 	         if(err){
+				 	console.log(err);
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{
 	        	 	response.status(200).send(squad);

@@ -198,7 +198,7 @@ subscriber.on("message", function(channel, message) {
 	app.get("/api/squad/:ownerId", function(request, response) {
 		response.header("Content-Type", "application/json");
 		var id = request.params.ownerId;
-		Squad.find({ownerId:id}).populate("players").exec(function(err, squad) {
+		Squad.findOne({ownerId:id}).populate("players").exec(function(err, squad) {
 	         if(err){
 	        	 	response.status(500).send("{'message': 'This is an error!'}");
 	         }else{

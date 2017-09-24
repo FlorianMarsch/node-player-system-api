@@ -32,14 +32,7 @@ app.get("/ping", function(request, response) {
 });
 var  minutely =  parseInt((process.env.POLL_TIME || 60*1*1000));
 var localhost = (process.env.LOCALHOST || "localhost:5000");
-var keepAlive = function() {
-	request("http://"+localhost+"/ping",function (error, response, body) {
-		// do nothing;
-	}).on('error', function(error){
-		console.log(error);
-	});
-};
-setInterval(keepAlive, minutely);
+
 
 var redis = require("redis");
 var subscriber  = redis.createClient(process.env.REDIS_URL);

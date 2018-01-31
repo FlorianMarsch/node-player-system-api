@@ -351,6 +351,7 @@ subscriber.on("message", function(channel, message) {
 			return;
 		}
 		payload.time = Date.now();
+		payload.username = payload.username._id;
 		new News(payload).save(function(err) {
 	         if(err){
 	        	 	response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});

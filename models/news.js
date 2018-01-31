@@ -8,6 +8,7 @@ var schema =  mongoose.model('News',{
 });
 
 var autoPopulate = function(next) {
+    console.log('autoPopulate');
 	this.populate('username');
     next();
   };

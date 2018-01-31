@@ -63,7 +63,7 @@ subscriber.on("message", function(channel, message) {
 			  Player.findOneAndUpdate({comunioId: element.comunioId}, element,{upsert:true,new: true},
 					  function(err, doc) {
 		         if(err){
-		        	 	console.log("{'message': 'This is an error!'}");
+		        	 	console.log({"message": "This is an error!"});
 		         }else{
 		        	 	console.log("update :", doc);
 		         }
@@ -76,7 +76,7 @@ subscriber.on("message", function(channel, message) {
 		response.header("Content-Type", "application/json");
 		Player.find(function(err, player) {
 	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	        	 	response.status(500).send({"message": "This is an error!"});
 	         }else{
 	        	 	response.status(200).send(player);
 	         }
@@ -89,7 +89,7 @@ subscriber.on("message", function(channel, message) {
 		response.header("Content-Type", "application/json");
 		Player.findById(id, function(err, player) {
 	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	        	 	response.status(500).send({"message": "This is an error!"});
 	         }else{
 	        	 	response.status(200).send(player);
 	         }
@@ -102,11 +102,11 @@ subscriber.on("message", function(channel, message) {
 
 		Profile.findById(profileId, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				Offer.find({from:profile},function(err, offer) {
 					if(err){
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 							response.status(200).send(offer);
 					}
@@ -120,11 +120,11 @@ subscriber.on("message", function(channel, message) {
 		var profileId = request.params.profileId;
 		Profile.findById(profileId, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				Offer.find({to:profile},function(err, offer) {
 					if(err){
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 							response.status(200).send(offer);
 					}
@@ -147,7 +147,7 @@ subscriber.on("message", function(channel, message) {
 
 		Profile.findById(payload.userid, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				payload.from = profile;
 				if(!payload.price || payload.price <1){
@@ -156,7 +156,7 @@ subscriber.on("message", function(channel, message) {
 			
 				Player.findById(payload.player.id, function(err, player) {
 					if(err){
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 						var to = {};
 						to.id = player.owner.id;
@@ -166,7 +166,7 @@ subscriber.on("message", function(channel, message) {
 						
 						Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
 							if(err){
-									response.status(500).send("{'message': 'This is an error!'}");
+									response.status(500).send({"message": "This is an error!"});
 							}else{
 									response.status(200).send(offer);
 							}
@@ -191,13 +191,13 @@ subscriber.on("message", function(channel, message) {
 
 		Profile.findById(profileId, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				payload.to = profile
 				
 				Player.findById(payload.player.id, function(err, player) {
 					if(err){
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 							if(player.owner.id !== payload.userid){
 								response.status(403).send("{'message': 'Unauthorized'}");
@@ -206,7 +206,7 @@ subscriber.on("message", function(channel, message) {
 							
 							Offer.findOneAndUpdate({status : "offen",id:payload._id},payload,{upsert:false},function(err, offer) {
 								if(err){
-										response.status(500).send("{'message': 'This is an error!'}");
+										response.status(500).send({"message": "This is an error!"});
 								}else{
 										response.status(200).send(offer);
 								}
@@ -223,11 +223,11 @@ subscriber.on("message", function(channel, message) {
 
 		Profile.findById(id, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				Squad.findOne({ownerId:profile}).populate("players").exec(function(err, squad) {
 					if(err){
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 							response.status(200).send(squad);
 					}
@@ -242,7 +242,7 @@ subscriber.on("message", function(channel, message) {
 
 		Profile.findById(id, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				var payload = request.body;
 				payload.players = payload.players.map(function(element){return element._id});
@@ -250,7 +250,7 @@ subscriber.on("message", function(channel, message) {
 						function(err, squad) {
 					if(err){
 							console.log(err);
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 							response.status(200).send(squad);
 					}
@@ -263,19 +263,19 @@ subscriber.on("message", function(channel, message) {
 		var id = request.params.ownerId;
 		Profile.findById(id, function(err, profile) {
 			if(err){
-					response.status(500).send("{'message': 'This is an error!'}");
+					response.status(500).send({"message": "This is an error!"});
 			}else{
 				Squad.findOne({ownerId: profile}, function(err, squad) {
 					if(err){
 							console.log(err);
-							response.status(500).send("{'message': 'This is an error!'}");
+							response.status(500).send({"message": "This is an error!"});
 					}else{
 						var payload = squad;
 						payload.lineUp = request.body;
 						Squad.findOneAndUpdate({ownerId: id}, payload,	function(err, squad) {
 							if(err){
 									console.log(err);
-									response.status(500).send("{'message': 'This is an error!'}");
+									response.status(500).send({"message": "This is an error!"});
 							}else{
 									response.status(200).send(squad);
 							}
@@ -291,7 +291,7 @@ subscriber.on("message", function(channel, message) {
 		response.header("Content-Type", "application/json");
 		 News.find(function(err, news) {
 	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	        	 	response.status(500).send({"message": "This is an error!"});
 	         }else{
 	        	 	response.status(200).send(news);
 	         }
@@ -319,7 +319,7 @@ subscriber.on("message", function(channel, message) {
 		
 		new News(payload).save(function(err) {
 	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
+	        	 	response.status(500).send({"message": "This is an error!"});
 	         }else{
 	        	 	response.status(200).send(payload);
 	         }

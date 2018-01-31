@@ -286,76 +286,7 @@ subscriber.on("message", function(channel, message) {
 		});
 	});	
 
-	app.get("/api/profile", function(request, response) {
-		response.header("Content-Type", "application/json");
-		 Profile.find(function(err, news) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(news);
-	         }
-	     });
-	});
 	
-	app.get("/api/profile/:id", function(request, response) {
-		 var id = request.params.id;
-		response.header("Content-Type", "application/json");
-		 Profile.findById(id, function(err, profile) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(profile);
-	         }
-	     });
-	});
-	
-	app.post("/api/profile/", function(request, response) {
-		
-		response.header("Content-Type", "application/json");
-		if(!request.body){
-			response.status(400).send("{'message': 'Bad Request'}");
-			return;
-		}
-		
-		var payload = request.body;
-		new Profile(payload).save(function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(payload);
-	         }
-	     });
-	});
-	
-	app.post("/api/profile/:id", function(request, response) {
-		var id = request.params.id;
-		response.header("Content-Type", "application/json");
-		if(!request.body){
-			response.status(400).send("{'message': 'Bad Request'}");
-			return;
-		}
-		
-		var payload = request.body;
-		Profile.findByIdAndUpdate(id, payload,function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send(payload);
-	         }
-	     });
-	});
-	
-	app.delete("/api/profile/:id", function(request, response) {
-		var id = request.params.id;
-		response.header("Content-Type", "application/json");
-		Profile.findByIdAndRemove(id, payload,function(err) {
-	         if(err){
-	        	 	response.status(500).send("{'message': 'This is an error!'}");
-	         }else{
-	        	 	response.status(200).send("{'message': 'Done'}");
-	         }
-	     });
-	});
 	app.get("/api/news", function(request, response) {
 		response.header("Content-Type", "application/json");
 		 News.find(function(err, news) {
@@ -394,7 +325,18 @@ subscriber.on("message", function(channel, message) {
 	         }
 	     });
 	});
+
+
+
+
+	var crud = require('./crud');
 	
+	crud(app, Division ,'division');
+	crud(app, Match ,'match');
+	crud(app, Matchday ,'matchday');
+	crud(app, Profile ,'profile');
+
+
 	var port =(process.env.PORT || 5000);
 	
 	app.listen(port, function() {

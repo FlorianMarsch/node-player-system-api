@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-module.exports = mongoose.model('Match',{
+ var schema = mongoose.model('Match',{
     id: String,
     matchday: {type: mongoose.Schema.ObjectId, ref: 'Matchday',required:true},
     guest: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
@@ -8,3 +8,18 @@ module.exports = mongoose.model('Match',{
 	guestGoals: { type: Number, default: 0},
 	homeGoals: { type: Number, default: 0}
 });
+
+
+var autoPopulate = function(next) {
+    this.populate('matchday');
+    this.populate('guest');
+    this.populate('home');
+    next();
+  };
+  
+schema.
+    pre('findOne', autoPopulate).
+    pre('find', autoPopulate);
+
+
+module.exports = schema;

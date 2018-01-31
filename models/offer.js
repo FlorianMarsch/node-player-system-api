@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-module.exports = mongoose.model('Offer',{
+var schema =  mongoose.model('Offer',{
 	id: String,
 	price :{ type: Number},
 	status :{ type: String, default: "offen" , enum:["offen","akzeptiert","abgelehnt","widerrufen","vollzogen"]},
@@ -9,3 +9,15 @@ module.exports = mongoose.model('Offer',{
 	player : {type: mongoose.Schema.ObjectId, ref: 'Player' ,required:true},
 	updated: { type: Date, default: Date.now }
 });
+
+
+var autoPopulate = function(next) {
+	this.populate('to');
+	this.populate('from');
+	this.populate('player');
+    next();
+  };
+  
+schema.
+    pre('findOne', autoPopulate).
+    pre('find', autoPopulate);

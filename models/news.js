@@ -7,12 +7,9 @@ var schema =  mongoose.model('News',{
 	message: String
 });
 
-var autoPopulate = function(next) {
-    this.populate('username');
-    next();
-  };
-  
-schema.schema.
-    pre('find', autoPopulate);
+    schema.find= function(next) {
+        schema.find.populate('username').exec(next);
+    };
+
 
     module.exports = schema;

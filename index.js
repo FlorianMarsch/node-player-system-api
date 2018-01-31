@@ -339,7 +339,10 @@ subscriber.on("message", function(channel, message) {
 
 
 	var port =(process.env.PORT || 5000);
-	
+	app.get('*', function(req, res){
+		res.header("Content-Type", "application/json");
+		res.status(404).send({"message": "This is an error!"});
+	  });
 	app.listen(port, function() {
 	  console.log('Node app is running on port', port);
 	});

@@ -222,17 +222,22 @@ subscriber.on("message", function(channel, message) {
 		var id = request.params.ownerId;
 
 		Profile.findById(id, function(err, profile) {
-			if(err){
-					response.status(500).send({"message": "This is an error!"});
+			if(!profile){
+				response.status(404).send({"message": "This is an error!"});
 			}else{
-				Squad.findOne({ownerId:profile}).populate("players").exec(function(err, squad) {
-					if(err){
-							response.status(500).send({"message": "This is an error!"});
-					}else{
-							response.status(200).send(squad);
-					}
-				});
+				if(err ){
+					response.status(500).send({"message": "This is an error!"});
+				}else{
+					Squad.findOne({ownerId:profile}).populate("players").exec(function(err, squad) {
+						if(err){
+								response.status(500).send({"message": "This is an error!"});
+						}else{
+								response.status(200).send(squad);
+						}
+					});
+				}
 			}
+			
 		});
 	});	
 

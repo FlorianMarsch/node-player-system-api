@@ -241,7 +241,7 @@ subscriber.on("message", function(channel, message) {
 				if(err ){
 					response.status(500).send({"message": "This is an error!", "error":err});
 				}else{
-					Squad.findOne({ownerId:profile._id}).populate("players").exec(function(err, squad) {
+					Squad.findOne({ownerId:id}).exec(function(err, squad) {
 						if(err){
 								response.status(500).send({"message": "This is an error!", "error":err});
 						}else{
@@ -278,7 +278,7 @@ subscriber.on("message", function(channel, message) {
 						payload.ownerId = payload.ownerId._id;
 					}
 					
-					Squad.findOneAndUpdate({ownerId: profile._id}, payload,{upsert:!request.body._id},
+					Squad.findOneAndUpdate({ownerId: id}, payload,{upsert:!request.body._id},
 							function(err, squad) {
 						if(err){
 								

@@ -2,7 +2,7 @@
 
 module.exports = function(app, type, root){
 
-
+	console.log("register : "+root);
 
 	app.get("/api/"+root, function(request, response) {
 		response.header("Content-Type", "application/json");

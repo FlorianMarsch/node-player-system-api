@@ -347,15 +347,13 @@ subscriber.on("message", function(channel, message) {
 		
 		var payload = request.body;
 		if(!payload.username || !payload.message){
-			var message = {'message': 'Bad Request'};
-			message.payload = payload;
-			response.status(400).send(JSON.stringify(message));
+			response.status(400).send({'message': 'Bad Request', "payload":payload});
 			return;
 		}
 		payload.time = Date.now();
 		new News(payload).save(function(err) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!", "error":err});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});
 	         }else{
 	        	 	response.status(200).send(payload);
 	         }

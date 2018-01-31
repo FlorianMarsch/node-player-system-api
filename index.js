@@ -107,7 +107,7 @@ subscriber.on("message", function(channel, message) {
 				if(err){
 						response.status(500).send({"message": "This is an error!", "error":err});
 				}else{
-					Offer.find({from:profile},function(err, offer) {
+					Offer.find({from:profileId},function(err, offer) {
 						if(err){
 								response.status(500).send({"message": "This is an error!", "error":err});
 						}else{
@@ -129,7 +129,7 @@ subscriber.on("message", function(channel, message) {
 				if(err){
 						response.status(500).send({"message": "This is an error!", "error":err});
 				}else{
-					Offer.find({to:profile},function(err, offer) {
+					Offer.find({to:profileId},function(err, offer) {
 						if(err){
 								response.status(500).send({"message": "This is an error!", "error":err});
 						}else{

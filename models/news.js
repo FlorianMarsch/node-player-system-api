@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 
 
-var schema = {
+var schema = mongoose.Schema({
 	id: String,
 	username: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
 	time: Date,
 	message: String
-};
+});
 
 var autoPopulate = function(next) {
     console.log('autoPopulate');

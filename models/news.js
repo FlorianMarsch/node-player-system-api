@@ -13,6 +13,6 @@ var autoPopulate = function(next) {
   };
   
 schema.schema.
-    pre('init', autoPopulate);
+    pre('find', autoPopulate);
 
     module.exports = schema;

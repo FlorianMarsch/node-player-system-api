@@ -36,6 +36,7 @@ module.exports = function(app, type, root){
 		}
 		
 		var payload = request.body;
+		console.log(request.body);
 		new type(payload).save(function(err) {
 	         if(err){
 	        	 	response.status(500).send({"message": "This is an error!", "error":err});

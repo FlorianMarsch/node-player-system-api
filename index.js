@@ -241,7 +241,7 @@ subscriber.on("message", function(channel, message) {
 				if(err ){
 					response.status(500).send({"message": "This is an error!"});
 				}else{
-					Squad.findOne({ownerId:profile}).populate("players").exec(function(err, squad) {
+					Squad.findOne({ownerId:profile._id}).populate("players").exec(function(err, squad) {
 						if(err){
 								response.status(500).send({"message": "This is an error!"});
 						}else{

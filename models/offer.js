@@ -18,6 +18,6 @@ var autoPopulate = function(next) {
     next();
   };
   
-schema.
+schema.schema.
     pre('findOne', autoPopulate).
     pre('find', autoPopulate);

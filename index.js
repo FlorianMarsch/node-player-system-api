@@ -271,12 +271,6 @@ subscriber.on("message", function(channel, message) {
 						response.status(500).send({"message": "This is an error!", "error":err});
 				}else{
 					var payload = request.body;
-					if(payload.players){
-						payload.players = payload.players.map(function(element){return element._id});
-					}
-					if(payload.ownerId){
-						payload.ownerId = payload.ownerId._id;
-					}
 					
 					Squad.findOneAndUpdate({ownerId: id}, payload,{upsert:!request.body._id},
 							function(err, squad) {
@@ -350,8 +344,7 @@ subscriber.on("message", function(channel, message) {
 			response.status(400).send({'message': 'Bad Request', "payload":payload});
 			return;
 		}
-		payload.time = Date.now();
-		payload.username = payload.username._id;
+		
 		new News(payload).save(function(err) {
 	         if(err){
 	        	 	response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});

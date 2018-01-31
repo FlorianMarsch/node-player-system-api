@@ -17,7 +17,7 @@ var autoPopulate = function(next) {
     if(this.username){
 		this.username = this.username._id;
     }
-    
+    this.time = Date.now();
     next();
   };
   

@@ -282,7 +282,7 @@ subscriber.on("message", function(channel, message) {
 							function(err, squad) {
 						if(err){
 								
-								response.status(500).send({"message": "This is an error!", "error":err});
+								response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});
 						}else{
 								response.status(200).send(squad);
 						}

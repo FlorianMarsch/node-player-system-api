@@ -8,7 +8,7 @@ module.exports = function(app, type, root){
 		response.header("Content-Type", "application/json");
         type.find(function(err, news) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!"});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{
 	        	 	response.status(200).send(news);
 	         }
@@ -20,7 +20,7 @@ module.exports = function(app, type, root){
 		response.header("Content-Type", "application/json");
         type.findById(id, function(err, profile) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!"});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{
 	        	 	response.status(200).send(profile);
 	         }
@@ -38,7 +38,7 @@ module.exports = function(app, type, root){
 		var payload = request.body;
 		new type(payload).save(function(err) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!"});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{
 	        	 	response.status(200).send(payload);
 	         }
@@ -56,7 +56,7 @@ module.exports = function(app, type, root){
 		var payload = request.body;
 		type.findByIdAndUpdate(id, payload,function(err) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!"});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{
 	        	 	response.status(200).send(payload);
 	         }
@@ -68,7 +68,7 @@ module.exports = function(app, type, root){
 		response.header("Content-Type", "application/json");
 		type.findByIdAndRemove(id, payload,function(err) {
 	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!"});
+	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{
 	        	 	response.status(200).send({"message": "Done"});
 	         }

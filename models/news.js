@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var schema =  mongoose.model('News',{
 	id: String,
 	username: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
-	time: String,
+	time: Date,
 	message: String
 });
 

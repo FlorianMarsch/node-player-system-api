@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 module.exports = mongoose.model('Profile',{
 	id: String,
-	name: { type: String, default: null },
+	name: String,
 	imageUrl: { type: String, default: "http://dummyimage.com/400x400/fff/000" },
 	archivments: { type: [String], default: [] },
 	twitterName: { type: String, default: null },

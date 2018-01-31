@@ -16,7 +16,8 @@ var autoPopulate = function(next) {
   
 schema.schema.
     pre('findOne', autoPopulate).
-	pre('find', autoPopulate);
+	pre('find', autoPopulate).
+	pre('findOneAndUpdate', autoPopulate);
 	
 
 	module.exports = schema;

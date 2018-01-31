@@ -17,10 +17,25 @@ var autoPopulate = function(next) {
 	this.populate('player');
     next();
   };
+
+  var autoReduce = function(next) {
+    if(this.to){
+		this.to = this.to._id;
+	}
+	if(this.from){
+		this.from = this.from._id;
+	}
+	if(this.player){
+		this.player = this.player._id;
+    }
+    
+    next();
+  };
   
 schema.
     pre('findOne', autoPopulate).
-	pre('find', autoPopulate);
+	pre('find', autoPopulate).
+	pre('save', autoReduce);
 	
 
 

@@ -16,10 +16,24 @@ var autoPopulate = function(next) {
     this.populate('home');
     next();
   };
+
+  var autoReduce = function(next) {
+    if(this.matchday){
+		this.matchday = this.matchday._id;
+    }
+    if(this.guest){
+		this.guest = this.guest._id;
+    }
+    if(this.home){
+		this.home = this.home._id;
+	}
+    next();
+  };
   
 schema.
     pre('findOne', autoPopulate).
-    pre('find', autoPopulate);
+    pre('find', autoPopulate).
+    pre('save', autoReduce);
 
 
 module.exports = mongoose.model('Match',schema);

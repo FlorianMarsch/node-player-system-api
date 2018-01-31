@@ -15,11 +15,27 @@ var autoPopulate = function(next) {
 	this.populate('ownerId');
     next();
   };
+
+  var autoReduce = function(next) {
+    if(this.players){
+		this.players = this.players.map(function(element){return element._id});
+	}
+	if(this.lineUp){
+		this.lineUp = this.lineUp.map(function(element){return element._id});
+	}
+	if(this.ownerId){
+		this.ownerId = this.ownerId._id;
+    }
+    
+    next();
+  };
+  
   
 schema.
     pre('findOne', autoPopulate).
 	pre('find', autoPopulate).
-	pre('findOneAndUpdate', autoPopulate);
+	pre('findOneAndUpdate', autoPopulate).
+	pre('save', autoReduce);
 	
 
 	module.exports = mongoose.model('Squad',schema);

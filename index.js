@@ -331,6 +331,7 @@ subscriber.on("message", function(channel, message) {
 
 	var crud = require('crud');
 	
+	console.log('crud: ', crud);
 	crud(app, Division ,'division');
 	crud(app, Match ,'match');
 	crud(app, Matchday ,'matchday');

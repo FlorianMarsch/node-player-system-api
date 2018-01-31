@@ -274,6 +274,9 @@ subscriber.on("message", function(channel, message) {
 					if(payload.players){
 						payload.players = payload.players.map(function(element){return element._id});
 					}
+					if(payload.ownerId){
+						payload.ownerId = payload.ownerId._id;
+					}
 					
 					Squad.findOneAndUpdate({ownerId: profile._id}, payload,{upsert:!request.body._id},
 							function(err, squad) {

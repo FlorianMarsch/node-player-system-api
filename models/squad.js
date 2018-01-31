@@ -10,9 +10,7 @@ var schema =  mongoose.model('Squad',{
 });
 
 var autoPopulate = function(next) {
-	this.populate('players');
-	this.populate('lineUp');
-	this.populate('ownerId');
+	this.populate('players','lineUp','ownerId');
     next();
   };
   

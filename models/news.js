@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 
-var schema =  mongoose.model('News',{
+
+var schema = {
 	id: String,
 	username: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
 	time: Date,
 	message: String
-});
+};
 
 var autoPopulate = function(next) {
     console.log('autoPopulate');
@@ -13,10 +14,10 @@ var autoPopulate = function(next) {
     next();
   };
   
-schema.schema.
+schema.
     pre('findOne', autoPopulate).
 	pre('find', autoPopulate).
 	pre('findOneAndUpdate', autoPopulate);
 
 
-    module.exports = schema;
+    module.exports = mongoose.model('News',schema);;

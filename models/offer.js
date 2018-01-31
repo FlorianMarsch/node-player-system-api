@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var schema =  mongoose.model('Offer',{
+var schema =  mongoose.Schema({
 	id: String,
 	price :{ type: Number},
 	status :{ type: String, default: "offen" , enum:["offen","akzeptiert","abgelehnt","widerrufen","vollzogen"]},
@@ -18,10 +18,10 @@ var autoPopulate = function(next) {
     next();
   };
   
-schema.schema.
+schema.
     pre('findOne', autoPopulate).
 	pre('find', autoPopulate);
 	
 
 
-	module.exports = schema;
+	module.exports = mongoose.model('Offer',schema);

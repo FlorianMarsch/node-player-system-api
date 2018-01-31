@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var schema =  mongoose.model('Squad',{
+var schema =  mongoose.Schema({
 	id: String,
 	players :{ type: [{ type: mongoose.Schema.ObjectId, ref: 'Player' }], default: [] },
 	lineUp :{ type: [{ type: mongoose.Schema.ObjectId, ref: 'Player' }], default: [] },
@@ -16,10 +16,10 @@ var autoPopulate = function(next) {
     next();
   };
   
-schema.schema.
+schema.
     pre('findOne', autoPopulate).
 	pre('find', autoPopulate).
 	pre('findOneAndUpdate', autoPopulate);
 	
 
-	module.exports = schema;
+	module.exports = mongoose.model('Squad',schema);

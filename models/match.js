@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
- var schema = mongoose.model('Match',{
+ var schema = mongoose.Schema({
     id: String,
     matchday: {type: mongoose.Schema.ObjectId, ref: 'Matchday',required:true},
     guest: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
@@ -17,9 +17,9 @@ var autoPopulate = function(next) {
     next();
   };
   
-schema.schema.
+schema.
     pre('findOne', autoPopulate).
     pre('find', autoPopulate);
 
 
-module.exports = schema;
+module.exports = mongoose.model('Match',schema);

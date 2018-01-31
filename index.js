@@ -329,7 +329,7 @@ subscriber.on("message", function(channel, message) {
 
 
 
-	var crud = require('./crud');
+	var crud = require('crud');
 	
 	crud(app, Division ,'division');
 	crud(app, Match ,'match');

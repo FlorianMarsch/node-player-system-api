@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var schema = mongoose.Schema({
 	id: String,
-	reporter: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
+  user: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
 	time: Date,
 	message: String
 });
@@ -14,8 +14,8 @@ var autoPopulate = function(next) {
   };
 
   var autoReduce = function(next) {
-    if(this.reporter){
-		  this.reporter = this.reporter._id;
+    if(this.user){
+		  this.user = this.user._id;
     }
     this.time = Date.now();
     next();

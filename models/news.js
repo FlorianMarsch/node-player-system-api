@@ -3,19 +3,19 @@ var mongoose = require('mongoose');
 
 var schema = mongoose.Schema({
 	id: String,
-	username: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
+	user: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
 	time: Date,
 	message: String
 });
 
 var autoPopulate = function(next) {
-	this.populate('username');
+	this.populate('user');
     next();
   };
 
   var autoReduce = function(next) {
-    if(this.username){
-		this.username = this.username._id;
+    if(this.user){
+		this.user = this.user._id;
     }
     this.time = Date.now();
     next();

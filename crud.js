@@ -66,7 +66,7 @@ module.exports = function(app, type, root){
 	app.delete("/api/"+root+"/:id", function(request, response) {
 		var id = request.params.id;
 		response.header("Content-Type", "application/json");
-		type.findByIdAndRemove(id, payload,function(err) {
+		type.findByIdAndRemove(id,function(err) {
 	         if(err){
 	        	 	response.status(500).send({"message": "This is an error!", "error":err});
 	         }else{

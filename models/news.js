@@ -15,9 +15,10 @@ var autoPopulate = function(next) {
 
   var autoReduce = function(next) {
     if(this.user){
-		this.user = this.user._id;
+		  this.user = this.user._id;
     }
     this.time = Date.now();
+    console.log(this);
     next();
   };
   

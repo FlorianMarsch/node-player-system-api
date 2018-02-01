@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var schema = mongoose.Schema({
 	id: String,
-	user: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
+	reporter: {type: mongoose.Schema.ObjectId, ref: 'Profile',required:true},
 	time: Date,
 	message: String
 });
@@ -14,11 +14,10 @@ var autoPopulate = function(next) {
   };
 
   var autoReduce = function(next) {
-    if(this.user){
-		  this.user = this.user._id;
+    if(this.reporter){
+		  this.reporter = this.reporter._id;
     }
     this.time = Date.now();
-    console.log(this);
     next();
   };
   
@@ -29,4 +28,4 @@ schema.
 	pre('save', autoReduce);
 
 
-    module.exports = mongoose.model('News',schema);;
+    module.exports = mongoose.model('News',schema);

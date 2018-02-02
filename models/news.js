@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Profile = require('.profile');
+var Profile = require('./profile');
 
 var schema = mongoose.Schema({
   id: String,

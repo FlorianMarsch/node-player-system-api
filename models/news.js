@@ -4,7 +4,7 @@ var Profile = require('./profile');
 var schema = mongoose.Schema({
   id: String,
   username: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
-  user: [Profile],
+  user: {type: Profile, required:true},
   
 	time: Date,
 	message: String

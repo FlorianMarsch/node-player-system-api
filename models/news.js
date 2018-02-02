@@ -10,7 +10,8 @@ var schema = mongoose.Schema({
 });
 
 var autoPopulate = function(next) {
-	this.populate('userId');
+  this.populate('userId');
+  this.populate('username');
     next();
   };
 

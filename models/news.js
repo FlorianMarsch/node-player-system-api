@@ -2,9 +2,10 @@ var mongoose = require('mongoose');
 
 
 var schema = mongoose.Schema({
-	id: String,
-  user: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
+  id: String,
   username: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
+  user: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
+  
 	time: Date,
 	message: String
 });

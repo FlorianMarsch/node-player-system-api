@@ -3,20 +3,20 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema({
   id: String,
   username: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
-  _user: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
+  userId: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true,alias:'user'},
   
 	time: Date,
 	message: String
 });
 
 var autoPopulate = function(next) {
-	this.populate('_user');
+	this.populate('userId');
     next();
   };
 
   var autoReduce = function(next) {
-    if(this._user){
-		  this._user = this._user._id;
+    if(this.userId){
+		  this.userId = this.userId._id;
     }
     this.time = Date.now();
     next();

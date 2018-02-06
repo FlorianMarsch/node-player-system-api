@@ -16,13 +16,11 @@ var autoPopulate = function(next) {
   };
 
   var autoReduce = function(next) {
-    /*
-    if(this.user){
-		  this.user = this.user._id;
-    }
+    
+    
     if(this.username){
 		  this.username = this.username._id;
-    }*/
+    }
     this.time = Date.now();
     next();
   };

@@ -340,7 +340,7 @@ subscriber.on("message", function(channel, message) {
 		}
 		
 		var payload = request.body;
-		if(!payload.userId|| !payload.message){
+		if(!payload.user|| !payload.message){
 			response.status(400).send({'message': 'Bad Request', "payload":payload});
 			return;
 		}

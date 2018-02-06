@@ -340,18 +340,18 @@ subscriber.on("message", function(channel, message) {
 		}
 		
 		var payload = request.body;
-		if(!payload.user|| !payload.message){
-			response.status(400).send({'message': 'Bad Request', "payload":payload});
-			return;
-		}
 		
-		new News(payload).save(function(err) {
-	         if(err){
-	        	 	response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});
-	         }else{
-	        	 	response.status(200).send(payload);
-	         }
-	     });
+		try {
+			new News(payload).save(function(err) {
+				if(err){
+						response.status(500).send({"message": "This is an error!", "error":err, "payload":payload});
+				}else{
+						response.status(200).send(payload);
+				}
+			});
+		} catch (e) {
+			response.status(400).send({"message": "Bad Request", "payload":payload, "error":e});
+		}
 	});
 
 

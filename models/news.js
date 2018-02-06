@@ -3,21 +3,21 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema({
   id: String,
   username: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
-  userId: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
+  user: {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},
   
 	time: Date,
 	message: String
-});
+},{ strict: 'throw' });
 
 var autoPopulate = function(next) {
-  this.populate('userId');
+  this.populate('user');
   this.populate('username');
     next();
   };
 
   var autoReduce = function(next) {
-    if(this.userId){
-		  this.userId = this.userId._id;
+    if(this.user){
+		  this.user = this.user._id;
     }
     this.time = Date.now();
     next();

@@ -19,15 +19,6 @@ var autoPopulate = function(next) {
   };
 
   var autoReduce = function(next) {
-    if(this.to){
-		this.to = this.to._id;
-	}
-	if(this.from){
-		this.from = this.from._id;
-	}
-	if(this.player){
-		this.player = this.player._id;
-    }
     
     next();
   };

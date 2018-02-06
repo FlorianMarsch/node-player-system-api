@@ -23,9 +23,7 @@ var autoPopulate = function(next) {
 	if(this.lineUp){
 		this.lineUp = this.lineUp.map(function(element){return element._id});
 	}
-	if(this.ownerId){
-		this.ownerId = this.ownerId._id;
-    }
+	
     
     next();
   };

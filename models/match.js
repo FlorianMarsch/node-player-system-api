@@ -18,15 +18,6 @@ var autoPopulate = function(next) {
   };
 
   var autoReduce = function(next) {
-    if(this.matchday){
-		this.matchday = this.matchday._id;
-    }
-    if(this.guest){
-		this.guest = this.guest._id;
-    }
-    if(this.home){
-		this.home = this.home._id;
-	}
     next();
   };
   

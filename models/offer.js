@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 
 var schema =  mongoose.Schema({
-	id: String,
-	price :{ type: Number},
+	price :{ type: Number,required:true},
 	status :{ type: String, default: "offen" , enum:["offen","akzeptiert","abgelehnt","widerrufen","vollzogen"]},
 	to : {type: mongoose.Schema.ObjectId, ref: 'Profile' ,required:true},
 	from : {type: mongoose.Schema.ObjectId, ref: 'Profile' , required:true},

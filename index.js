@@ -169,7 +169,8 @@ subscriber.on("message", function(channel, message) {
 									response.status(403).send({"message": "Unauthorized", "player":player});
 									return;
 								}
-								Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
+								var conditions = {status : "offen",to:payload.to, player:payload.player,from:payload.from};
+								Offer.findOneAndUpdate(conditions,payload,{upsert:true,new: true},function(err, offer) {
 									if(err){
 											response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload});
 									}else{

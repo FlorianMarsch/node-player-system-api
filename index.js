@@ -178,7 +178,7 @@ subscriber.on("message", function(channel, message) {
 								};
 								Offer.findOneAndUpdate(conditions,payload,{upsert:true,new: true},function(err, offer) {
 									if(err){
-										response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload});
+										response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload, "conditions":conditions});
 									}else{
 										response.status(200).send(offer);
 									}

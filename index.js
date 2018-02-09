@@ -169,12 +169,18 @@ subscriber.on("message", function(channel, message) {
 									response.status(403).send({"message": "Unauthorized", "player":player});
 									return;
 								}
-								var conditions = {status : "offen",to:payload.to, player:payload.player,from:payload.from};
+								var ObjectId = require('mongoose').Types.ObjectId; 
+								var conditions = {
+									status : "offen",
+									to: new ObjectId(payload.to._id),
+									player: new ObjectId(payload.player._id),
+									from: new ObjectId(payload.from._id)
+								};
 								Offer.findOneAndUpdate(conditions,payload,{upsert:true,new: true},function(err, offer) {
 									if(err){
-											response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload});
+										response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload});
 									}else{
-											response.status(200).send(offer);
+										response.status(200).send(offer);
 									}
 								});
 							}
@@ -184,6 +190,9 @@ subscriber.on("message", function(channel, message) {
 			};
 		});
 	});
+
+
+
 	app.post("/api/offer/to/:profileId", function(request, response) {
 		response.header("Content-Type", "application/json");
 		var profileId = request.params.profileId;

@@ -176,9 +176,6 @@ subscriber.on("message", function(channel, message) {
 									player: new ObjectId(payload.player._id),
 									from: new ObjectId(payload.from._id)
 								};
-								if(payload._id){
-									delete payload._id;
-								}
 								Offer.findOneAndUpdate(conditions,payload,{upsert:true,new: true},function(err, offer) {
 									if(err){
 										response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload, "conditions":conditions});

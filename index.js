@@ -215,6 +215,10 @@ subscriber.on("message", function(channel, message) {
 						if(err){
 								response.status(500).send({"message": "This is an error!", "error":err});
 						}else{
+								if(player.owner.id !== payload.userid || !player.market){
+									response.status(403).send({"message": "Unauthorized", "player":player});
+									return;
+								}
 								
 								Offer.findOneAndUpdate({status : "offen",id:payload._id},payload,{upsert:false},function(err, offer) {
 									if(err){

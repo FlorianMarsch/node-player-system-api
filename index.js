@@ -166,6 +166,10 @@ subscriber.on("message", function(channel, message) {
 					if(err){
 							response.status(500).send({"message": "This is an error!", "error":err});
 					}else{
+						if(!player.market){
+							response.status(403).send({"message": "Unauthorized", "player":player});
+							return;
+						}
 						var to = {};
 						to.id = player.owner.id;
 						to.name = player.owner.name;
@@ -211,8 +215,8 @@ subscriber.on("message", function(channel, message) {
 						if(err){
 								response.status(500).send({"message": "This is an error!", "error":err});
 						}else{
-								if(player.owner.id !== payload.userid){
-									response.status(403).send({"message": "Unauthorized"});
+								if(player.owner.id !== payload.userid || !player.market){
+									response.status(403).send({"message": "Unauthorized", "player":player});
 									return;
 								}
 								

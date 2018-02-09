@@ -149,12 +149,12 @@ subscriber.on("message", function(channel, message) {
 		
 		Profile.findById(payload.to._id, function(err, profile) {
 			if(err){
-					response.status(500).send({"message": "This is an error!", "error":err});
+					response.status(500).send({"message": "This is an error! Can not find _to", "error":err, "payload":payload});
 			}else{
 				payload.to = profile;
 				Profile.findById(payload.user._id, function(err, profile) {
 					if(err){
-							response.status(500).send({"message": "This is an error!", "error":err});
+							response.status(500).send({"message": "This is an error! Can not find _from", "error":err, "payload":payload});
 					}else{
 						payload.from = profile;
 						if(!payload.price || payload.price <1){
@@ -163,7 +163,7 @@ subscriber.on("message", function(channel, message) {
 					
 						Player.findById(payload.player._id, function(err, player) {
 							if(err){
-									response.status(500).send({"message": "This is an error!", "error":err});
+									response.status(500).send({"message": "This is an error! Can not find _player", "error":err, "payload":payload});
 							}else{
 								if(!player.market){
 									response.status(403).send({"message": "Unauthorized", "player":player});
@@ -171,7 +171,7 @@ subscriber.on("message", function(channel, message) {
 								}
 								Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
 									if(err){
-											response.status(500).send({"message": "This is an error!", "error":err});
+											response.status(500).send({"message": "This is an error! Can not save _offer", "error":err, "payload":payload});
 									}else{
 											response.status(200).send(offer);
 									}

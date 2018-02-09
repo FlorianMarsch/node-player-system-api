@@ -146,49 +146,43 @@ subscriber.on("message", function(channel, message) {
 		var profileId = request.params.profileId;
 		
 		var payload = request.body;
-		if(!payload.username || !payload.userid || !payload.player || !payload.player.id){
-			var message = {'message': 'Bad Request'};
-			message.payload = payload;
-			response.status(400).send(JSON.stringify(message));
-			return;
-		}
-
-		Profile.findById(payload.userid, function(err, profile) {
+		
+		Profile.findById(payload.to._id, function(err, profile) {
 			if(err){
 					response.status(500).send({"message": "This is an error!", "error":err});
 			}else{
-				payload.from = profile;
-				if(!payload.price || payload.price <1){
-					payload.status = "widerrufen";
-				}
-			
-				Player.findById(payload.player.id, function(err, player) {
+				payload.to = profile;
+				Profile.findById(payload.user._id, function(err, profile) {
 					if(err){
 							response.status(500).send({"message": "This is an error!", "error":err});
 					}else{
-						if(!player.market){
-							response.status(403).send({"message": "Unauthorized", "player":player});
-							return;
+						payload.from = profile;
+						if(!payload.price || payload.price <1){
+							payload.status = "widerrufen";
 						}
-						var to = {};
-						to.id = player.owner.id;
-						to.name = player.owner.name;
-						payload.to = to;
-						payload.player.name = player.name;
-						
-						Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
+					
+						Player.findById(payload.player._id, function(err, player) {
 							if(err){
 									response.status(500).send({"message": "This is an error!", "error":err});
 							}else{
-									response.status(200).send(offer);
+								if(!player.market){
+									response.status(403).send({"message": "Unauthorized", "player":player});
+									return;
+								}
+								Offer.findOneAndUpdate({status : "offen",to:payload.to, player:payload.player,from:payload.from},payload,{upsert:true},function(err, offer) {
+									if(err){
+											response.status(500).send({"message": "This is an error!", "error":err});
+									}else{
+											response.status(200).send(offer);
+									}
+								});
 							}
 						});
 					}
 				});
-			}
+			};
 		});
 	});
-	
 	app.post("/api/offer/to/:profileId", function(request, response) {
 		response.header("Content-Type", "application/json");
 		var profileId = request.params.profileId;

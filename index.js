@@ -157,9 +157,6 @@ subscriber.on("message", function(channel, message) {
 							response.status(500).send({"message": "This is an error! Can not find _from", "error":err, "payload":payload});
 					}else{
 						payload.from = profile;
-						if(!payload.price || payload.price <1){
-							payload.status = "widerrufen";
-						}
 					
 						Player.findById(payload.player._id, function(err, player) {
 							if(err){
